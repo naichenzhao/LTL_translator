@@ -114,8 +114,6 @@ def translate_line(curr_line):
         - Mx for x = number corresponding to the command
         - M3 = turn on laser
         - M5 = turn off laser
-        
-        - Currently, it isnt used as whether or not the laser runs is interpreted through G0/G1
 
     '''
     # Ignore comments
@@ -124,12 +122,7 @@ def translate_line(curr_line):
     
     #Serialize command into tokens
     name, tokens = tokenize(curr_line)
-
-    # Ignore Mx Commands for now
-    #    - These will be implied through G1 and G0 commands
-    if name.startswith("M"):
-        return None
-
+    
     if OUTPUT_TYPE == 0 :
         
         # G28 --> Homing command, everything is set to 0
@@ -145,6 +138,9 @@ def translate_line(curr_line):
         # Erase all extraneous lines
         if name == "G90" or name == "G21" :
             return None
+        
+        if name[0] == "M":
+            return format_M_AE(name, tokens, state)
         
         if name[0] == "G":
             return format_G_AE(name, tokens, state)
@@ -175,7 +171,7 @@ def run(read_file, write_file):
 
     # Set initial values:
     if OUTPUT_TYPE == 0 :
-        write_value = generate_preamble_2pp()
+        write_value = generate_preamble_2PP()
     elif OUTPUT_TYPE == 1 : 
         write_value = generate_preamble_AE()
     else:

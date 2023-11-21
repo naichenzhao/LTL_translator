@@ -18,29 +18,39 @@ def format_G_2PP(name, tokens, state):
 
     return move
 
+
 # Function for formatting a Gx command for the aerotech stage
 # G0 --> Movement command
 # G1 --> Extrusion command
 def format_G_AE(name, tokens, state):  
-    
     # get the first line linear coordinates
     move = "LINEAR "
     move += get_attribute('X', tokens, state) + "*$SCALE "
     move += get_attribute('Y', tokens, state) + "*$SCALE "
-    move += " F0.200*$VEL\n" # Not entirely sure what this value is, hard coded for now
-    
-    # Im not sure what the DWELl thing is but im adding it
-    move += "DWELL 0.01\n"
-    
-    # Set whether or not we enable the laser
-    move += "$DO[0].X={0}\n".format(name[1])
-    
-    # Im not sure what the DWELl thing is but im adding it
-    move += "DWELL 0.200\n"
+    move += " F0.200*$VEL" # Not entirely sure what this value is, hard coded for now
     
     return move
 
 
+# Function for formatting a Mx command for the aerotech stage
+# M3 --> turn on laser
+# M5 --> turn off laser
+# We will ignore everything else
+def format_M_AE(name, tokens, state):
+    # DWELL delay command
+    move = "\nDWELL 0.01\n"
+    
+    # Set whether or not we enable the laser
+    #    Assuming 1 for disable and 0 for enable
+    if name == "M3":
+        move += "$DO[0].X=0\n"
+    elif name == "M5":
+        move += "$DO[0].X=1\n"
+    else:
+        return None
+    
+    move += "DWELL 0.200\n"
+    return move
 
 
 
