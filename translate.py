@@ -240,13 +240,13 @@ if __name__ == '__main__':
         file_name = raw_file_name
     
     # Set the file we read from
-    read_file = open(file_name + ".gcode", 'r')
+    read_file = open("gcode/" + file_name + ".gcode", 'r')
     
     # Set the output file:
     if OUTPUT_TYPE == 0 :
-        write_file = open(file_name + "_2PP" + ".gcode", 'w')
+        write_file = open("generated/" + file_name + "_2PP" + ".gcode", 'w')
     elif OUTPUT_TYPE == 1 :
-        write_file = open(file_name + "_AE" + ".txt", 'w')
+        write_file = open("generated/" + file_name + "_AE" + ".txt", 'w')
     
     
     
