@@ -41,11 +41,11 @@ def format_M_AE(name, tokens, state):
     move = "\nDWELL 0.01\n"
     
     # Set whether or not we enable the laser
-    #    Assuming 1 for disable and 0 for enable
+    #    Assuming 0 for disable and 1 for enable
     if name == "M3":
-        move += "$DO[0].X=0\n"
-    elif name == "M5":
         move += "$DO[0].X=1\n"
+    elif name == "M5":
+        move += "$DO[0].X=0\n"
     else:
         return None
     
